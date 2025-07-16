@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rk Hub | IA Oficial v2.3 (VIP System)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007acc;
+            --primary-hover: #0099ff;
+            --background-dark: #1a1a1a;
+            --background-light: #2c2c2c;
+            --background-input: #3a3a3a;
+            --text-color: #f0f0f0;
+            --accent-color: #00aeff;
+            --error-color: #ff4d4d;
+            --admin-color: #e6a23c;
+            --vip-color: #d678f1;
+        }
+
+        /* --- ESTILOS GERAIS (sem grandes mudanças) --- */
+        body{font-family:'Poppins',sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);color:var(--text-color);margin:0;overflow:hidden}body.no-select{-webkit-user-select:none;-ms-user-select:none;user-select:none}@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.container{width:380px;padding:40px;background-color:rgba(26,26,26,0.85);backdrop-filter:blur(10px);border-radius:15px;box-shadow:0 10px 40px rgba(0,0,0,0.6);text-align:center;border:1px solid rgba(255,255,255,0.1);transition:all .4s ease-in-out;animation:slideIn .5s ease-out}.container h1{color:var(--accent-color);margin-bottom:30px;font-weight:700;letter-spacing:1px}.container .input-group{position:relative;margin-bottom:20px}.container input{width:100%;padding:14px 20px;border:1px solid var(--background-input);border-radius:10px;background-color:var(--background-input);color:var(--text-color);box-sizing:border-box;transition:all .3s ease;font-size:1em}.container input:focus{outline:none;border-color:var(--primary-color);box-shadow:0 0 15px rgba(0,122,204,0.6)}.action-button{width:100%;padding:14px;border:none;background:linear-gradient(45deg,var(--primary-color),var(--primary-hover));color:white;border-radius:10px;cursor:pointer;font-weight:600;font-size:1.1em;transition:all .3s ease;box-shadow:0 5px 20px rgba(0,122,204,0.4);margin-top:10px}.action-button:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,153,255,0.5)}#error-message,#register-error-message{color:var(--error-color);margin-top:15px;height:20px;font-size:0.9em;font-weight:500}.captcha-group{margin-top:15px;padding:10px;background-color:var(--background-light);border-radius:8px}.captcha-group label{font-size:0.9em;color:var(--accent-color)}.captcha-group input{margin-top:8px;text-align:center}.form-link{color:var(--accent-color);text-decoration:none;margin-top:15px;display:inline-block;font-size:0.9em;cursor:pointer}.form-link:hover{text-decoration:underline}
+        
+        /* --- ESTILOS DO CHAT --- */
+        #chat-wrapper{width:600px;height:95vh;max-height:800px;display:flex;justify-content:center;align-items:center}.chat-container{width:100%;height:100%;border:1px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;border-radius:15px;overflow:hidden;background-color:rgba(44,44,44,0.85);backdrop-filter:blur(10px);box-shadow:0 10px 40px rgba(0,0,0,0.6)}.chat-header{display:flex;align-items:center;padding:15px 25px;background-color:rgba(26,26,26,0.9);border-bottom:1px solid rgba(255,255,255,0.1);justify-content:space-between;flex-wrap:wrap;gap:10px;}.header-info{display:flex;align-items:center;gap:15px}.header-logo{width:45px;height:45px;border-radius:50%;object-fit:cover;border:2px solid var(--primary-color)}.header-title{font-size:1.3em;font-weight:600;color:var(--accent-color)}#logout-button{padding:8px 16px;background-color:#d14a4a;color:white;border:none;border-radius:10px;cursor:pointer;font-size:0.9em;font-weight:500;transition:all .3s ease}#logout-button:hover{background-color:#e06868;box-shadow:0 0 12px rgba(209,74,74,0.6)}
+        .chat-messages{flex:1;padding:25px;overflow-y:auto;display:flex;flex-direction:column;gap:18px}.chat-messages::-webkit-scrollbar{width:8px}.chat-messages::-webkit-scrollbar-track{background:var(--background-light)}.chat-messages::-webkit-scrollbar-thumb{background:#555;border-radius:4px}.message{display:flex;flex-direction:column;max-width:85%;word-wrap:break-word;line-height:1.6;animation:slideIn .4s ease-out;position:relative}.message-content{padding:12px 20px;border-radius:22px}.message.sent{align-self:flex-end}.message.sent .message-content{background:linear-gradient(45deg,var(--primary-color),var(--primary-hover));color:white;border-bottom-right-radius:6px}.message.received{align-self:flex-start}.message.received .message-content{background-color:#3a3d41;border-bottom-left-radius:6px}
+        .chat-input{display:flex;padding:20px;gap:12px;align-items:center;border-top:1px solid rgba(255,255,255,0.1)}.chat-input input{flex:1;padding:14px 22px;border:1px solid var(--background-input);border-radius:30px;background-color:var(--background-input);color:var(--text-color);outline:none;transition:all .3s ease;font-size:1em}.chat-input input:focus{border-color:var(--primary-color)}.send-button{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border:none;background:linear-gradient(45deg,var(--primary-color),var(--primary-hover));color:white;border-radius:50%;cursor:pointer;transition:all .3s ease}.send-button:hover{transform:scale(1.1);box-shadow:0 0 18px rgba(0,153,255,0.6)}
+
+        /* --- NOVO SELETOR DE IA E MENU DE ESCOLHA --- */
+        #change-ai-btn { background-color: var(--background-input); padding: 8px 12px; border: 1px solid #444; border-radius: 8px; color: var(--text-color); cursor: pointer; transition: all 0.2s; }
+        #change-ai-btn:hover { background-color: var(--primary-color); border-color: var(--primary-hover); }
+        #ai-choice-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1001; text-align: center; }
+        #ai-choice-modal { display: flex; gap: 30px; }
+        .ai-choice-card { background-color: var(--background-light); border: 2px solid var(--background-input); border-radius: 15px; padding: 30px 40px; width: 220px; cursor: pointer; transition: all 0.3s ease; }
+        .ai-choice-card:hover { transform: translateY(-10px); border-color: var(--primary-color); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .ai-choice-card h3 { margin-top: 0; font-size: 1.3em; }
+        .ai-choice-card p { font-size: 2.5em; margin: 10px 0; }
+        .ai-choice-card .vip-tag { font-size: 0.8em; font-weight: bold; color: white; background: linear-gradient(45deg, #a855f7, #d946ef); padding: 3px 8px; border-radius: 5px; }
+        .ai-choice-card.vip-locked { opacity: 0.6; cursor: not-allowed; border-color: #444; }
+        .ai-choice-card.vip-locked:hover { transform: none; box-shadow: none; border-color: var(--error-color); }
+        #ai-choice-overlay h2 { color: white; margin-bottom: 30px; }
+        
+        /* --- ESTILOS DO PAINEL ADMIN E MANUTENÇÃO --- */
+        #admin-panel-overlay, #maintenance-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        #maintenance-overlay { flex-direction: column; text-align: center; }
+        #admin-panel { width: 90%; max-width: 700px; background-color: var(--background-light); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.2); padding: 30px; box-shadow: 0 10px 50px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto; position: relative; }
+        #admin-panel h2 { color: var(--admin-color); text-align: center; margin-top: 0; margin-bottom: 25px; border-bottom: 1px solid var(--background-input); padding-bottom: 15px; }
+        .admin-section { background-color: var(--background-dark); padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        .admin-section h3 { margin-top: 0; }
+        .admin-section h3.vip-title { color: var(--vip-color); }
+        .admin-button { padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s ease; margin-right: 10px; margin-top: 10px; }
+        .admin-button.shutdown-temp { background-color: #f59e0b; }
+        .admin-button.shutdown-perm { background-color: #ef4444; }
+        .admin-button.restart { background-color: #22c55e; }
+        .admin-button.add { background-color: var(--primary-color); }
+        .admin-button.remove { background-color: #94a3b8; }
+        .admin-button.vip { background: linear-gradient(45deg, #a855f7, #d946ef); }
+        .admin-input { width: calc(100% - 140px); padding: 10px; border-radius: 8px; border: 1px solid var(--background-input); background-color: var(--background-input); color: var(--text-color); }
+        #admin-list-ul, #banned-list-ul, #vip-list-ul { color: white; list-style: none; padding-left: 0; max-height: 150px; overflow-y: auto; }
+        #admin-list-ul li, #banned-list-ul li, #vip-list-ul li { background-color: var(--background-input); padding: 8px 12px; border-radius: 6px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        #site-status-message { text-align: center; font-size: 1.2em; color: var(--admin-color); padding: 10px; background-color: var(--background-dark); border-radius: 8px; }
+        #close-admin-panel { position: absolute; top: 10px; right: 15px; background: none; border: none; color: white; font-size: 2em; cursor: pointer; line-height: 1; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="no-select">
+
+    <div id="app-wrapper">
+        <div id="device-selector" class="container">
+             <!-- ... (código do seletor de dispositivo sem alterações) ... -->
+        </div>
+
+        <div id="login-container" class="container hidden">
+             <!-- ... (código do login sem alterações) ... -->
+        </div>
+
+        <div id="register-container" class="container hidden">
+             <!-- ... (código do registro sem alterações) ... -->
+        </div>
+
+        <div id="chat-wrapper" class="hidden">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="header-info">
+                        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAEgASADASIAAhEBAxEB/8QAHAAAAQUBAQEAAAAAAAAAAAAAAwECBAUGBwAI/8QAUBAAAgEDAgQDBAcDBgoGCwEAAQIDAAQRBSEGEjFBBxNRYSIyUnGBFCRCobFSYnOCkaLR0uEVM0RTdJOywvAksuJDRFRjc4OTJSY1ZHSUwv/EABoBAQEBAQEBAQAAAAAAAAAAAAABAgMEBgX/xAAxEQEAAgIBAgQDBwUBAQEAAAAAAQIDERIEITFBURMUImFxkaHwMsHRFUIjNFKx4UL/2gAMAwEAAhEDEQA/APyH5lT1T+ZU/U+gq/8AqN+r6l/zKoeZU9U/mVP1B/wBRv1fUv+ZU9U/mVP1PoL/qN+r6l/zKnqn8yp+oP+o36vqX/MqeqfzKn6g/6jfq+r6l/zKnqn8yp+oP+o36vqX/MqeqfzKn6g/6jfq+r6l/zKnqn8yp+oP+o36vqX/MqeqfzKn6g/6jfq+r6l/zKnqn8yp+oP+o36vqX/MqeqfzKn6g/6jfq+r6l/zKnqn8yp+oP+o36vqX/MqeqfzKn6g/6jfq+r6l/zKnqn8yp+oP+o36vqX/MqeqfzKn6g/6jfq+r6l/zKnqn8yp+oP+o36vqX/MqeqfzKn6g/6jfq+r6l/zKnqn8yp+oP+o36vqX/MqeqfzKn6gD/AKjfq+oIeo9B6D/qN+r6gg6j0HoP+o36vqCDqPQeg/6jfq+oIOo9B6D/qN+r6gg6j0HoP+o36vqCDqPQeg/6jfq+oIOo9B6D/qN+r6gg6M9B6D/qN+r6gg6j0HoP+o36vqCDqPQeg/6jfq+oIOo9B6D/qN+r6gg6j0HoP+o36vqCDqPQeg/6jfq+oIOo9B6D/qN+r6gg6j0HoP+o36vqCDqPQeg/6jfq+oIOo9B6D/qN+r6gggo9BR6j1Fe f/3H9UUV9R6iigoooKKKKCiiigoooKKKKCiiigoooKKKKCiiigoooKKKKCiiigoooKKKKCiiigoooKKKKCgoqfUV5/wBw/VFH oH o9BFe f/AHH9UUV9R6iigoooKKKKCiiigoooKKKKCiiigoooKKKKCiiigoooKKKKCiiigoooKKKKCiiigoooKKKKCij1HqK8/wC4fqgo9B6Cj1HqK8/7j+qCvqPUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUV5/3H9UFHoPUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUV5/3H9UFHoPUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUV5/3H9UFHoPUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUV5/3H9UEdB6j1HqK837iCvqPUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUEHqPUUUUH/9k=" alt="Logo Rk Hub" class="header-logo">
+                        <span class="header-title">Rk Hub | IA Oficial</span>
+                    </div>
+                    <!-- NOVO BOTÃO DE TROCA DE IA -->
+                    <button id="change-ai-btn">Trocar IA</button>
+                    <button id="logout-button">Sair</button>
+                </div>
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="chat-input">
+                    <input type="text" id="message-input" placeholder="Converse com a Rk Hub | IA Oficial...">
+                    <button class="send-button" id="send-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="maintenance-overlay" class="container hidden">
+        <!-- ... (código da tela de manutenção sem alterações) ... -->
+    </div>
+
+    <!-- NOVO MENU DE ESCOLHA DA IA -->
+    <div id="ai-choice-overlay" class="hidden">
+        <h2>Escolha sua Assistente</h2>
+        <div id="ai-choice-modal">
+            <div class="ai-choice-card" id="select-rkhub-ai">
+                <h3>Rk Hub | Chat ia 🤖</h3>
+                <p>🤖</p>
+                <span>Padrão</span>
+            </div>
+            <div class="ai-choice-card" id="select-claude-ai">
+                <h3>Rk Hub | Chat ia VIP ✨</h3>
+                <p>✨</p>
+                <span class="vip-tag">VIP</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-panel-overlay" class="hidden">
+        <div id="admin-panel">
+             <button id="close-admin-panel">×</button>
+            <h2>Painel Administrativo</h2>
+
+            <div class="admin-section">
+                <!-- ... (seção de controle do site sem alterações) ... -->
+            </div>
+
+            <div class="admin-section">
+                <h3>Gerenciar Administradores</h3>
+                <input type="email" id="admin-email-input" class="admin-input" placeholder="Gmail do novo admin">
+                <button id="add-admin-btn" class="admin-button add">Adicionar</button>
+                <ul id="admin-list-ul"></ul>
+            </div>
+
+            <!-- NOVA SEÇÃO PARA GERENCIAR VIPS -->
+            <div class="admin-section">
+                <h3 class="vip-title">Gerenciar Usuários VIP</h3>
+                <input type="email" id="vip-email-input" class="admin-input" placeholder="Gmail do novo usuário VIP">
+                <button id="add-vip-btn" class="admin-button vip">Adicionar VIP</button>
+                <ul id="vip-list-ul"></ul>
+            </div>
+
+            <div class="admin-section">
+                <h3>Banir Usuários</h3>
+                <!-- ... (seção de banimento sem alterações) ... -->
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- ELEMENTOS DO DOM (Incluindo novos elementos) ---
+            // ... (todos os seletores anteriores)
+            const changeAiBtn = document.getElementById('change-ai-btn');
+            const aiChoiceOverlay = document.getElementById('ai-choice-overlay');
+            const selectRkhubAiCard = document.getElementById('select-rkhub-ai');
+            const selectClaudeAiCard = document.getElementById('select-claude-ai');
+            const vipEmailInput = document.getElementById('vip-email-input');
+            const addVipBtn = document.getElementById('add-vip-btn');
+            const vipListUl = document.getElementById('vip-list-ul');
+
+            // --- BASES DE DADOS SIMULADAS (Incluindo VIPs) ---
+            const getFromStorage = (key, defaultValue) => JSON.parse(localStorage.getItem(key)) || defaultValue;
+            const saveToStorage = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+            
+            let administrators = getFromStorage('administrators', ['blackvendasblk@gmail.com']);
+            let bannedUsers = getFromStorage('bannedUsers', []);
+            let vipUsers = getFromStorage('vipUsers', ['blackvendasblk@gmail.com']); // Admin principal é VIP por padrão
+            let siteStatus = getFromStorage('siteStatus', { status: 'online', message: '' });
+            let captchaAnswer = 0;
+            let currentAI = 'rkhub'; // 'rkhub' ou 'claude'
+
+            // --- BASES DE CONHECIMENTO DAS IAs ---
+            const rkhubKnowledgeBase = { /* ... (Sua base de conhecimento da Rk Hub) ... */ };
+            const claudeKnowledgeBase = { /* ... (Sua base de conhecimento do Claude) ... */ };
+
+
+            // --- FUNÇÕES DE ADMINISTRAÇÃO E VIP ---
+
+            function isCurrentUserVip() {
+                const currentUser = localStorage.getItem('user');
+                return vipUsers.includes(currentUser);
+            }
+
+            function updateAdminPanelUI() {
+                // ... (código anterior para admins, banidos e status)
+
+                // NOVO: Renderiza a lista de VIPs
+                vipListUl.innerHTML = '';
+                vipUsers.forEach(vip => {
+                    const li = document.createElement('li');
+                    li.textContent = vip;
+                    const removeBtn = document.createElement('button');
+                    removeBtn.textContent = 'Remover';
+                    removeBtn.className = 'admin-button remove';
+                    removeBtn.onclick = () => removeVip(vip);
+                    li.appendChild(removeBtn);
+                    vipListUl.appendChild(li);
+                });
+            }
+
+            function addVip() {
+                const newVip = vipEmailInput.value.trim().toLowerCase();
+                if (newVip && newVip.includes('@') && !vipUsers.includes(newVip)) {
+                    vipUsers.push(newVip);
+                    saveToStorage('vipUsers', vipUsers);
+                    vipEmailInput.value = '';
+                    updateAdminPanelUI();
+                    alert(`'${newVip}' agora é um usuário VIP.`);
+                }
+            }
+            
+            function removeVip(vipToRemove) {
+                if (confirm(`Tem certeza que deseja remover o acesso VIP de '${vipToRemove}'?`)) {
+                    vipUsers = vipUsers.filter(vip => vip !== vipToRemove);
+                    saveToStorage('vipUsers', vipUsers);
+                    updateAdminPanelUI();
+                }
+            }
+
+
+            // --- FUNÇÕES DE LÓGICA DO CHAT E UI ---
+            
+            function updateCurrentAiUI() {
+                const placeholder = currentAI === 'rkhub'
+                    ? 'Converse com Rk Hub | Chat ia 🤖...'
+                    : 'Converse com Rk Hub | Chat ia VIP ✨...';
+                messageInput.placeholder = placeholder;
+            }
+
+            function openAiChoiceModal() {
+                // Verifica o status VIP e atualiza a aparência do card
+                if (isCurrentUserVip()) {
+                    selectClaudeAiCard.classList.remove('vip-locked');
+                } else {
+                    selectClaudeAiCard.classList.add('vip-locked');
+                }
+                aiChoiceOverlay.classList.remove('hidden');
+            }
+
+            function closeAiChoiceModal() {
+                aiChoiceOverlay.classList.add('hidden');
+            }
+            
+            function switchAI(aiName) {
+                if (currentAI === aiName) return;
+
+                // Lógica de verificação de acesso
+                if (aiName === 'claude' && !isCurrentUserVip()) {
+                    alert("Acesso Negado. Apenas usuários VIP podem usar esta assistente.");
+                    return;
+                }
+
+                currentAI = aiName;
+                localStorage.setItem('currentAI', aiName);
+                updateCurrentAiUI();
+                
+                const switchMessage = aiName === 'claude'
+                    ? "Bem-vindo(a) à experiência <b>VIP</b>! A IA avançada está pronta para ajudar."
+                    : "Você está usando a IA <b>Padrão</b>.";
+                displayMessage(switchMessage, 'received');
+            }
+            
+             function setupDevice(deviceType) {
+                document.body.classList.add(`device-${deviceType}`);
+                localStorage.setItem('deviceType', deviceType);
+                if (localStorage.getItem('isLoggedIn') === 'true') {
+                    showScreen(chatWrapper);
+                    currentAI = localStorage.getItem('currentAI') || 'rkhub';
+                    
+                    // Se um não-vip salvou a AI do Claude, reverte para a padrão
+                    if (currentAI === 'claude' && !isCurrentUserVip()) {
+                        currentAI = 'rkhub';
+                        localStorage.setItem('currentAI', 'rkhub');
+                    }
+                    
+                    updateCurrentAiUI();
+                     if (chatMessages.childElementCount === 0) {
+                        let welcomeMessage = "Olá! Clique em 'Trocar IA' para escolher sua assistente.";
+                        if (isCurrentUserVip()) {
+                            welcomeMessage = "Olá, usuário <b>VIP</b>! Sua assistente avançada está disponível no menu 'Trocar IA'.";
+                        }
+                        displayMessage(welcomeMessage, 'received');
+                    }
+                } else {
+                    showScreen(loginContainer);
+                }
+            }
+            
+            // --- INICIALIZAÇÃO E EVENT LISTENERS ---
+
+            // ... (cole aqui as funções: isCurrentUserAdmin, openAdminPanel, handleLogin, handleRegister, handleLogout, getBotResponse, etc., sem alterá-las)
+
+            // Listeners principais
+            changeAiBtn.addEventListener('click', openAiChoiceModal);
+            aiChoiceOverlay.addEventListener('click', (e) => {
+                if (e.target === aiChoiceOverlay) closeAiChoiceModal(); // Fecha se clicar fora do modal
+            });
+            selectRkhubAiCard.addEventListener('click', () => {
+                switchAI('rkhub');
+                closeAiChoiceModal();
+            });
+            selectClaudeAiCard.addEventListener('click', () => {
+                if (!isCurrentUserVip()) {
+                    alert("Acesso Negado. Apenas usuários VIP podem usar esta assistente.");
+                    return;
+                }
+                switchAI('claude');
+                closeAiChoiceModal();
+            });
+
+            // Listeners do Painel Admin (incluindo o novo botão VIP)
+            addVipBtn.addEventListener('click', addVip);
+            // ... (todos os outros listeners do painel, login, etc.)
+            
+             // --- INICIALIZAÇÃO DO SCRIPT ---
+             // O resto do seu código de inicialização e todos os outros listeners vão aqui.
+             // Cole o código restante do script anterior para garantir que tudo funcione.
+        });
+    </script>
+</body>
+</html>
