@@ -1,91 +1,612 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #1e1e1e;
-  color: #fff;
-}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squid Game - Projeto Escolar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #e94560;
+            text-shadow: 0 0 10px rgba(233, 69, 96, 0.7);
+            margin-bottom: 10px;
+        }
+        
+        .credits {
+            font-size: 1rem;
+            color: #533483;
+            margin-bottom: 15px;
+        }
+        
+        .score-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px solid #e94560;
+        }
+        
+        .game-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 400px;
+            background: #0f3460;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 3px solid #e94560;
+            box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+        }
+        
+        .game-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #0f3460 0%, #1a1a2e 100%);
+            z-index: 1;
+        }
+        
+        .player {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #ff2e63, #e94560);
+            border-radius: 50%;
+            z-index: 10;
+            transition: transform 0.2s;
+        }
+        
+        .player.jumping {
+            transform: translateY(-80px);
+            transition: transform 0.4s ease-in-out;
+        }
+        
+        .obstacle {
+            position: absolute;
+            background: linear-gradient(45deg, #0f3460, #533483);
+            border: 2px solid #e94560;
+            z-index: 5;
+            border-radius: 5px;
+        }
+        
+        .collectible {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ffd700, #ff9500);
+            border-radius: 50%;
+            z-index: 5;
+            box-shadow: 0 0 10px gold;
+            animation: pulse 1.5s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.2); }
+        }
+        
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .btn {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #ff2e63;
+            transform: scale(1.05);
+        }
+        
+        .instructions {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #533483;
+        }
+        
+        .instructions h2 {
+            color: #e94560;
+            margin-bottom: 10px;
+        }
+        
+        .instructions p {
+            margin-bottom: 10px;
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            display: none;
+        }
+        
+        .game-over h2 {
+            font-size: 3rem;
+            color: #e94560;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(233, 69, 96, 0.9);
+        }
+        
+        .game-over p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .keyboard-key {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #533483;
+            border-radius: 5px;
+            border: 1px solid #e94560;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .game-container {
+                height: 300px;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+                font-size: 1rem;
+            }
+            
+            .score-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SQUID GAME - PROJETO ESCOLAR</h1>
+        <p class="credits">Projeto feito por Laura e Miguel</p>
+    </header>
+    
+    <div class="score-container">
+        <div>Pontuação: <span id="score">0</span></div>
+        <div>Vidas: <span id="lives">3</span></div>
+        <div>Fase: <span id="level">1</span></div>
+    </div>
+    
+    <div class="game-container">
+        <div class="game-background"></div>
+        <div id="game-area"></div>
+        
+        <div class="game-over" id="game-over">
+            <h2>FIM DE JOGO</h2>
+            <p>Sua pontuação: <span id="final-score">0</span></p>
+            <button class="btn" id="restart-btn">Jogar Novamente</button>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="btn" id="start-btn">Iniciar Jogo</button>
+        <button class="btn" id="pause-btn">Pausar</button>
+    </div>
+    
+    <div class="instructions">
+        <h2>Como Jogar</h2>
+        <p>Use as teclas <span class="keyboard-key">←</span> <span class="keyboard-key">→</span> para mover o personagem e evitar os obstáculos.</p>
+        <p>Pressione a tecla <span class="keyboard-key">ESPAÇO</span> para pular sobre os obstáculos.</p>
+        <p>Colete os círculos dourados para ganhar pontos extras!</p>
+        <p>Você tem 3 vidas. Boa sorte!</p>
+    </div>
 
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-header {
-  padding: 15px;
-  background-color: #272727;
-  text-align: center;
-  font-size: 24px;
-}
-
-main#chat {
-  flex: 1;
-  padding: 15px;
-  overflow-y: auto;
-}
-
-footer {
-  display: flex;
-  padding: 10px;
-  background-color: #272727;
-  gap: 5px;
-}
-
-footer input[type="text"] {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-footer button {
-  padding: 10px 15px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  background-color: #4caf50;
-  color: #fff;
-  cursor: pointer;
-}
-
-.message {
-  margin-bottom: 15px;
-  padding: 10px;
-  border-radius: 8px;
-  max-width: 80%;
-  word-wrap: break-word;
-}
-
-.user {
-  background-color: #4caf50;
-  color: #fff;
-  align-self: flex-end;
-}
-
-.bot {
-  background-color: #333333;
-  color: #fff;
-  align-self: flex-start;
-}
-
-.bot.thinking::after {
-  content: " Digitando...";
-  font-style: italic;
-  opacity: 0.7;
-}
-
-code {
-  display: block;
-  background: #2d2d2d;
-  padding: 8px;
-  border-radius: 5px;
-  margin-top: 5px;
-  overflow-x: auto;
-}
-
-.message img {
-  max-width: 100%;
-  border-radius: 5px;
-  margin-top: 5px;
-}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos do DOM
+            const gameArea = document.getElementById('game-area');
+            const scoreElement = document.getElementById('score');
+            const livesElement = document.getElementById('lives');
+            const levelElement = document.getElementById('level');
+            const startBtn = document.getElementById('start-btn');
+            const pauseBtn = document.getElementById('pause-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            const gameOverScreen = document.getElementById('game-over');
+            const finalScoreElement = document.getElementById('final-score');
+            
+            // Variáveis do jogo
+            let gameRunning = false;
+            let gamePaused = false;
+            let score = 0;
+            let lives = 3;
+            let level = 1;
+            let player;
+            let obstacles = [];
+            let collectibles = [];
+            let keys = {};
+            let gameSpeed = 2;
+            let gameLoop;
+            let isJumping = false;
+            
+            // Inicializar o jogo
+            function initGame() {
+                // Limpar área de jogo
+                gameArea.innerHTML = '';
+                
+                // Criar jogador
+                player = document.createElement('div');
+                player.className = 'player';
+                player.id = 'player';
+                player.style.bottom = '20px';
+                player.style.left = '285px';
+                gameArea.appendChild(player);
+                
+                // Reiniciar variáveis
+                score = 0;
+                lives = 3;
+                level = 1;
+                gameSpeed = 2;
+                obstacles = [];
+                collectibles = [];
+                isJumping = false;
+                
+                // Atualizar UI
+                updateUI();
+                
+                // Iniciar o loop do jogo
+                if (gameLoop) clearInterval(gameLoop);
+                gameLoop = setInterval(updateGame, 20);
+            }
+            
+            // Atualizar a interface do usuário
+            function updateUI() {
+                scoreElement.textContent = score;
+                livesElement.textContent = lives;
+                levelElement.textContent = level;
+            }
+            
+            // Atualizar o estado do jogo
+            function updateGame() {
+                if (gamePaused || !gameRunning) return;
+                
+                // Mover obstáculos
+                moveObstacles();
+                
+                // Mover colecionáveis
+                moveCollectibles();
+                
+                // Gerar novos obstáculos
+                if (Math.random() < 0.03) {
+                    generateObstacle();
+                }
+                
+                // Gerar colecionáveis
+                if (Math.random() < 0.01) {
+                    generateCollectible();
+                }
+                
+                // Verificar colisões
+                checkCollisions();
+                
+                // Aumentar dificuldade com o tempo
+                if (score > level * 100) {
+                    levelUp();
+                }
+            }
+            
+            // Mover obstáculos
+            function moveObstacles() {
+                for (let i = 0; i < obstacles.length; i++) {
+                    const obstacle = obstacles[i];
+                    const obstacleTop = parseInt(obstacle.style.top) || 0;
+                    
+                    // Mover obstáculo para baixo
+                    obstacle.style.top = (obstacleTop + gameSpeed) + 'px';
+                    
+                    // Remover obstáculos que saíram da tela
+                    if (obstacleTop > 400) {
+                        gameArea.removeChild(obstacle);
+                        obstacles.splice(i, 1);
+                        i--;
+                        score += 5;
+                        updateUI();
+                    }
+                }
+            }
+            
+            // Mover colecionáveis
+            function moveCollectibles() {
+                for (let i = 0; i < collectibles.length; i++) {
+                    const collectible = collectibles[i];
+                    const collectibleTop = parseInt(collectible.style.top) || 0;
+                    
+                    // Mover colecionável para baixo
+                    collectible.style.top = (collectibleTop + gameSpeed) + 'px';
+                    
+                    // Remover colecionáveis que saíram da tela
+                    if (collectibleTop > 400) {
+                        gameArea.removeChild(collectible);
+                        collectibles.splice(i, 1);
+                        i--;
+                    }
+                }
+            }
+            
+            // Gerar obstáculos
+            function generateObstacle() {
+                const obstacle = document.createElement('div');
+                obstacle.className = 'obstacle';
+                
+                // Tamanho e posição aleatórios
+                const width = Math.floor(Math.random() * 100) + 50;
+                const height = Math.floor(Math.random() * 20) + 10;
+                const left = Math.floor(Math.random() * (600 - width));
+                
+                obstacle.style.width = width + 'px';
+                obstacle.style.height = height + 'px';
+                obstacle.style.left = left + 'px';
+                obstacle.style.top = '0px';
+                
+                gameArea.appendChild(obstacle);
+                obstacles.push(obstacle);
+            }
+            
+            // Gerar colecionáveis
+            function generateCollectible() {
+                const collectible = document.createElement('div');
+                collectible.className = 'collectible';
+                
+                const left = Math.floor(Math.random() * 550);
+                collectible.style.left = left + 'px';
+                collectible.style.top = '0px';
+                
+                gameArea.appendChild(collectible);
+                collectibles.push(collectible);
+            }
+            
+            // Verificar colisões
+            function checkCollisions() {
+                const playerRect = {
+                    top: 400 - parseInt(player.style.bottom) - 30,
+                    bottom: 400 - parseInt(player.style.bottom),
+                    left: parseInt(player.style.left),
+                    right: parseInt(player.style.left) + 30
+                };
+                
+                // Verificar colisão com obstáculos
+                for (let i = 0; i < obstacles.length; i++) {
+                    const obstacle = obstacles[i];
+                    const obstacleRect = {
+                        top: parseInt(obstacle.style.top),
+                        bottom: parseInt(obstacle.style.top) + parseInt(obstacle.style.height),
+                        left: parseInt(obstacle.style.left),
+                        right: parseInt(obstacle.style.left) + parseInt(obstacle.style.width)
+                    };
+                    
+                    if (
+                        playerRect.right > obstacleRect.left &&
+                        playerRect.left < obstacleRect.right &&
+                        playerRect.bottom > obstacleRect.top &&
+                        playerRect.top < obstacleRect.bottom
+                    ) {
+                        // Colisão detectada
+                        handleCollision();
+                        gameArea.removeChild(obstacle);
+                        obstacles.splice(i, 1);
+                        break;
+                    }
+                }
+                
+                // Verificar colisão com colecionáveis
+                for (let i = 0; i < collectibles.length; i++) {
+                    const collectible = collectibles[i];
+                    const collectibleRect = {
+                        top: parseInt(collectible.style.top),
+                        bottom: parseInt(collectible.style.top) + 20,
+                        left: parseInt(collectible.style.left),
+                        right: parseInt(collectible.style.left) + 20
+                    };
+                    
+                    if (
+                        playerRect.right > collectibleRect.left &&
+                        playerRect.left < collectibleRect.right &&
+                        playerRect.bottom > collectibleRect.top &&
+                        playerRect.top < collectibleRect.bottom
+                    ) {
+                        // Colecionável coletado
+                        score += 20;
+                        updateUI();
+                        
+                        // Efeito visual de coleta
+                        collectible.style.transition = 'all 0.3s';
+                        collectible.style.transform = 'scale(2)';
+                        collectible.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            if (collectible.parentNode) {
+                                gameArea.removeChild(collectible);
+                            }
+                        }, 300);
+                        
+                        collectibles.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+            
+            // Manipular colisão
+            function handleCollision() {
+                lives--;
+                updateUI();
+                
+                // Efeito visual de colisão
+                player.style.backgroundColor = 'red';
+                player.style.boxShadow = '0 0 15px red';
+                setTimeout(() => {
+                    player.style.backgroundColor = '';
+                    player.style.boxShadow = '';
+                }, 300);
+                
+                if (lives <= 0) {
+                    endGame();
+                }
+            }
+            
+            // Subir de nível
+            function levelUp() {
+                level++;
+                gameSpeed += 0.5;
+                
+                // Efeito visual de level up
+                const levelUpEffect = document.createElement('div');
+                levelUpEffect.style.position = 'absolute';
+                levelUpEffect.style.top = '0';
+                levelUpEffect.style.left = '0';
+                levelUpEffect.style.width = '100%';
+                levelUpEffect.style.height = '100%';
+                levelUpEffect.style.background = 'radial-gradient(circle, rgba(255,215,0,0.3) 0%, transparent 70%)';
+                levelUpEffect.style.zIndex = '15';
+                levelUpEffect.style.pointerEvents = 'none';
+                gameArea.appendChild(levelUpEffect);
+                
+                setTimeout(() => {
+                    gameArea.removeChild(levelUpEffect);
+                }, 1000);
+                
+                updateUI();
+            }
+            
+            // Finalizar o jogo
+            function endGame() {
+                gameRunning = false;
+                clearInterval(gameLoop);
+                finalScoreElement.textContent = score;
+                gameOverScreen.style.display = 'flex';
+            }
+            
+            // Função de pulo
+            function jump() {
+                if (!isJumping && parseInt(player.style.bottom) === 20) {
+                    isJumping = true;
+                    player.classList.add('jumping');
+                    
+                    setTimeout(() => {
+                        player.classList.remove('jumping');
+                        isJumping = false;
+                    }, 400);
+                }
+            }
+            
+            // Event listeners para controles
+            document.addEventListener('keydown', function(e) {
+                keys[e.key] = true;
+                
+                // Movimento do jogador
+                if (gameRunning && !gamePaused) {
+                    const currentLeft = parseInt(player.style.left);
+                    
+                    if (keys['ArrowLeft'] && currentLeft > 0) {
+                        player.style.left = (currentLeft - 10) + 'px';
+                    }
+                    
+                    if (keys['ArrowRight'] && currentLeft < 570) {
+                        player.style.left = (currentLeft + 10) + 'px';
+                    }
+                    
+                    // Pulo (tecla espaço)
+                    if ((keys[' '] || keys['Spacebar']) && !isJumping) {
+                        jump();
+                    }
+                }
+            });
+            
+            document.addEventListener('keyup', function(e) {
+                keys[e.key] = false;
+            });
+            
+            // Botões de controle
+            startBtn.addEventListener('click', function() {
+                if (!gameRunning) {
+                    gameRunning = true;
+                    gamePaused = false;
+                    initGame();
+                    gameOverScreen.style.display = 'none';
+                    startBtn.textContent = 'Reiniciar';
+                } else {
+                    initGame();
+                    gameOverScreen.style.display = 'none';
+                }
+            });
+            
+            pauseBtn.addEventListener('click', function() {
+                if (gameRunning) {
+                    gamePaused = !gamePaused;
+                    pauseBtn.textContent = gamePaused ? 'Continuar' : 'Pausar';
+                }
+            });
+            
+            restartBtn.addEventListener('click', function() {
+                gameRunning = true;
+                gamePaused = false;
+                initGame();
+                gameOverScreen.style.display = 'none';
+            });
+            
+            // Inicializar instruções iniciais
+            initGame();
+            gameRunning = false;
+            gameOverScreen.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
