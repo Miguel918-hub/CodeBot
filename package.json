@@ -1,0 +1,13 @@
+{
+  "name": "CloudiX – Hospedagens",
+  "version": "1.0.0",
+  "description": "Sistema de hospedagem para bots Discord",
+  "scripts": {
+    "dev": "live-server frontend",
+    "build": "echo 'Build complete'"
+  },
+  "dependencies": {
+    "live-server": "^1.2.2"
+  },
+  "devDependencies": {}
+}
