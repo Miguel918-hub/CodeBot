@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Email - BotHost</title>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo">
+                <h2>📧 Verifique seu Email</h2>
+                <p>Enviamos um código de verificação para seu email</p>
+            </div>
+
+            <form class="auth-form" id="verifyForm">
+                <div class="form-group">
+                    <label>Código de Verificação</label>
+                    <input type="text" id="verificationCode" required placeholder="Digite o código de 6 dígitos" maxlength="6">
+                    <small>Verifique sua caixa de entrada e spam</small>
+                </div>
+
+                <button type="submit" class="btn-primary">Verificar Email</button>
+                
+                <div class="resend-code">
+                    <p>Não recebeu o código? <a href="#" onclick="resendCode()">Reenviar código</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>
