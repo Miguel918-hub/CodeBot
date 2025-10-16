@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração CloudiX - Guia</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        .config-guide {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .config-example {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .config-line {
+            margin-bottom: 0.5rem;
+        }
+        
+        .config-comment {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .requirement-list {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin: 1rem 0;
+        }
+        
+        .requirement-item {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .requirement-item:before {
+            content: '✅ ';
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>☁️ CloudiX</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span>📊 Dashboard</span>
+                </a>
+                <a href="deploy.html" class="nav-item">
+                    <span>🚀 Deploy Bot</span>
+                </a>
+                <a href="cloudix-config-guide.html" class="nav-item active">
+                    <span>📝 Config Guide</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <span>👤 Meu Perfil</span>
+                </a>
+                <a href="https://discord.gg/PA3vD3b9yT" class="nav-item" target="_blank">
+                    <span>💬 Suporte</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>📋 Guia de Configuração CloudiX</h1>
+                    <p>Aprenda a configurar seu bot para deploy automático</p>
+                </div>
+            </header>
+
+            <div class="config-guide">
+                <div class="requirement-list">
+                    <h3>📦 Requisitos para Deploy:</h3>
+                    <div class="requirement-item">Arquivo ZIP contendo todos os arquivos do bot</div>
+                    <div class="requirement-item">Arquivo <strong>cloudix.config</strong> na raiz</div>
+                    <div class="requirement-item">Arquivo principal do bot (ex: index.js)</div>
+                    <div class="requirement-item">Token do bot Discord válido</div>
+                </div>
+
+                <h2>⚙️ Arquivo cloudix.config</h2>
+                <p>Crie um arquivo chamado <strong>cloudix.config</strong> na pasta raiz do seu bot:</p>
+                
+                <div class="config-example">
+                    <div class="config-line">SYSTEM CloudiX NAME="MeuBotIncível"</div>
+                    <div class="config-line">AVATAR=https://i.imgur.com/bWhx70T.png</div>
+                    <div class="config-line">TYPE=bot</div>
+                    <div class="config-line">MAIN=index.js</div>
+                    <div class="config-line">RAM=512</div>
+                    <div class="config-line">AUTORESTART=true</div>
+                    <div class="config-line">VERSION=latest</div>
+                    <div class="config-line">APT=tools</div>
+                </div>
+
+                <h3>🔧 Explicação das Configurações:</h3>
+                
+                <div class="config-example">
+                    <div class="config-line"><strong>NAME</strong> - Nome do seu bot (obrigatório)</div>
+                    <div class="config-line"><strong>AVATAR</strong> - URL da imagem do bot (opcional)</div>
+                    <div class="config-line"><strong>TYPE</strong> - Tipo: "bot" (obrigatório)</div>
+                    <div class="config-line"><strong>MAIN</strong> - Arquivo principal (obrigatório)</div>
+                    <div class="config-line"><strong>RAM</strong> - Memória em MB: 512, 1024, 2048 (obrigatório)</div>
+                    <div class="config-line"><strong>AUTORESTART</strong> - Reinício automático: true/false (obrigatório)</div>
+                    <div class="config-line"><strong>VERSION</strong> - Versão: "latest" (obrigatório)</div>
+                    <div class="config-line"><strong>APT</strong> - Ferramentas: "tools" (obrigatório)</div>
+                </div>
+
+                <h2>📁 Estrutura do ZIP:</h2>
+                <div class="config-example">
+                    <div class="config-line">meu-bot.zip/</div>
+                    <div class="config-line">├── 📄 cloudix.config</div>
+                    <div class="config-line">├── 📄 index.js</div>
+                    <div class="config-line">├── 📄 package.json</div>
+                    <div class="config-line">└── 📁 commands/</div>
+                </div>
+
+                <h2>🚀 Exemplo Completo</h2>
+                
+                <p><strong>1. Crie o cloudix.config:</strong></p>
+                <div class="config-example">
+                    <div class="config-line">SYSTEM CloudiX NAME="MusicBot"</div>
+                    <div class="config-line">AVATAR=https://i.imgur.com/abc123.png</div>
+                    <div class="config-line">TYPE=bot</div>
+                    <div class="config-line">MAIN=bot.js</div>
+                    <div class="config-line">RAM=1024</div>
+                    <div class="config-line">AUTORESTART=true</div>
+                    <div class="config-line">VERSION=latest</div>
+                    <div class="config-line">APT=tools</div>
+                </div>
+
+                <p><strong>2. Crie o package.json:</strong></p>
+                <div class="config-example">
+                    <div class="config-line">{</div>
+                    <div class="config-line">  "name": "music-bot",</div>
+                    <div class="config-line">  "version": "1.0.0",</div>
+                    <div class="config-line">  "main": "bot.js",</div>
+                    <div class="config-line">  "dependencies": {</div>
+                    <div class="config-line">    "discord.js": "^14.0.0",</div>
+                    <div class="config-line">    "@discordjs/voice": "^0.16.0"</div>
+                    <div class="config-line">  }</div>
+                    <div class="config-line">}</div>
+                </div>
+
+                <p><strong>3. Zip todos os arquivos e faça deploy!</strong></p>
+
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="deploy.html" class="btn-primary">🚀 Fazer Deploy Agora</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
