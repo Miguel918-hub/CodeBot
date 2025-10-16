@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - CloudiX</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>☁️ CloudiX</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span>📊 Dashboard</span>
+                </a>
+                <a href="deploy.html" class="nav-item">
+                    <span>🚀 Deploy Bot</span>
+                </a>
+                <a href="profile.html" class="nav-item active">
+                    <span>👤 Meu Perfil</span>
+                </a>
+                <a href="plans.html" class="nav-item">
+                    <span>💎 Planos</span>
+                </a>
+                <a href="https://discord.gg/PA3vD3b9yT" class="nav-item" target="_blank">
+                    <span>💬 Suporte</span>
+                </a>
+                <a href="#" class="nav-item logout" onclick="logout()">
+                    <span>🚪 Sair</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>👤 Meu Perfil</h1>
+                    <p>Gerencie suas informações pessoais</p>
+                </div>
+                <div class="header-right">
+                    <div class="user-menu">
+                        <img src="assets/default-avatar.png" alt="Avatar" class="avatar">
+                        <span id="usernameDisplay">usuário</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="profile-content">
+                <div class="profile-card">
+                    <h2>📝 Informações Pessoais</h2>
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label>Nome de Usuário</label>
+                            <input type="text" id="profileUsername" placeholder="Seu nome de usuário">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="profileEmail" placeholder="seu@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Foto de Perfil (URL)</label>
+                            <input type="url" id="profileAvatar" placeholder="https://exemplo.com/foto.jpg">
+                        </div>
+                        <button type="submit" class="btn-primary">💾 Salvar Alterações</button>
+                    </form>
+                </div>
+
+                <div class="profile-card">
+                    <h2>🔒 Alterar Senha</h2>
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label>Senha Atual</label>
+                            <input type="password" id="currentPassword" placeholder="Sua senha atual">
+                        </div>
+                        <div class="form-group">
+                            <label>Nova Senha</label>
+                            <input type="password" id="newPassword" placeholder="Nova senha">
+                        </div>
+                        <div class="form-group">
+                            <label>Confirmar Nova Senha</label>
+                            <input type="password" id="confirmNewPassword" placeholder="Repita a nova senha">
+                        </div>
+                        <button type="submit" class="btn-primary">🔑 Alterar Senha</button>
+                    </form>
+                </div>
+
+                <div class="profile-card danger-zone">
+                    <h2>⚠️ Zona de Perigo</h2>
+                    <p>Ações irreversíveis. Tenha cuidado!</p>
+                    <div class="danger-actions">
+                        <button class="btn-danger" onclick="deleteAccount()">
+                            🗑️ Excluir Minha Conta
+                        </button>
+                        <button class="btn-warning" onclick="exportData()">
+                            📤 Exportar Meus Dados
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/profile.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
