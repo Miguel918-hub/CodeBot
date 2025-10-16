@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "CloudiX – Hospedagens",
+  "name": "cloudix-hospedagem",
   "builds": [
     {
       "src": "frontend/**/*",
@@ -12,5 +12,6 @@
       "src": "/(.*)",
       "dest": "/frontend/$1"
     }
-  ]
+  ],
+  "outputDirectory": "frontend"
 }
