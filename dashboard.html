@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CloudiX</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>☁️ CloudiX</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <span>📊 Dashboard</span>
+                </a>
+                <a href="deploy.html" class="nav-item">
+                    <span>🚀 Deploy Bot</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <span>👤 Meu Perfil</span>
+                </a>
+                <a href="plans.html" class="nav-item">
+                    <span>💎 Planos</span>
+                </a>
+                <a href="https://discord.gg/PA3vD3b9yT" class="nav-item" target="_blank">
+                    <span>💬 Suporte</span>
+                </a>
+                <a href="#" class="nav-item logout" onclick="logout()">
+                    <span>🚪 Sair</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>Bem-vindo, <span id="userName">Usuário</span>! 👋</h1>
+                    <p>Gerencie seus bots Discord</p>
+                </div>
+                <div class="header-right">
+                    <div class="user-menu">
+                        <img src="assets/default-avatar.png" alt="Avatar" class="avatar">
+                        <span id="usernameDisplay">usuário</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">🤖</div>
+                    <div class="stat-info">
+                        <h3>Bots Ativos</h3>
+                        <span class="stat-number">0/1</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-info">
+                        <h3>Uptime</h3>
+                        <span class="stat-number">0%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💾</div>
+                    <div class="stat-info">
+                        <h3>RAM Usada</h3>
+                        <span class="stat-number">0MB/512MB</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-info">
+                        <h3>Plano</h3>
+                        <span class="stat-number">Gratuito</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bots-section">
+                <div class="section-header">
+                    <h2>Meus Bots</h2>
+                    <a href="deploy.html" class="btn-primary">+ Novo Bot</a>
+                </div>
+                
+                <div class="bots-grid">
+                    <div class="no-bots">
+                        <div class="no-bots-icon">🤖</div>
+                        <h3>Nenhum bot implantado</h3>
+                        <p>Comece implantando seu primeiro bot Discord</p>
+                        <a href="deploy.html" class="btn-primary">Implantar Primeiro Bot</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <h2>Ações Rápidas</h2>
+                <div class="actions-grid">
+                    <a href="deploy.html" class="action-card">
+                        <div class="action-icon">🚀</div>
+                        <h3>Deploy Bot</h3>
+                        <p>Implante um novo bot</p>
+                    </a>
+                    <a href="plans.html" class="action-card">
+                        <div class="action-icon">💎</div>
+                        <h3>Upgrade Plano</h3>
+                        <p>Melhore seus recursos</p>
+                    </a>
+                    <a href="https://discord.gg/PA3vD3b9yT" class="action-card" target="_blank">
+                        <div class="action-icon">💬</div>
+                        <h3>Suporte</h3>
+                        <p>Obtenha ajuda</p>
+                    </a>
+                    <a href="profile.html" class="action-card">
+                        <div class="action-icon">👤</div>
+                        <h3>Meu Perfil</h3>
+                        <p>Editar configurações</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
