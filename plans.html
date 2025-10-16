@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planos - CloudiX</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        .plans-container {
+            padding: 2rem 0;
+        }
+        
+        .plans-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .plans-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .current-plan {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid #333;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .current-plan-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .plans-comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .plan-features {
+            margin: 2rem 0;
+        }
+        
+        .plan-features ul {
+            list-style: none;
+        }
+        
+        .plan-features li {
+            padding: 0.5rem 0;
+            color: #ccc;
+        }
+        
+        .plan-features li:before {
+            content: '✓ ';
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .plan-unavailable {
+            opacity: 0.6;
+        }
+        
+        .plan-unavailable .btn-primary {
+            background: #666;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>☁️ CloudiX</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span>📊 Dashboard</span>
+                </a>
+                <a href="deploy.html" class="nav-item">
+                    <span>🚀 Deploy Bot</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <span>👤 Meu Perfil</span>
+                </a>
+                <a href="plans.html" class="nav-item active">
+                    <span>💎 Planos</span>
+                </a>
+                <a href="https://discord.gg/PA3vD3b9yT" class="nav-item" target="_blank">
+                    <span>💬 Suporte</span>
+                </a>
+                <a href="#" class="nav-item logout" onclick="logout()">
+                    <span>🚪 Sair</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>💎 Planos CloudiX</h1>
+                    <p>Escolha o plano perfeito para seus bots</p>
+                </div>
+                <div class="header-right">
+                    <div class="user-menu">
+                        <img src="assets/default-avatar.png" alt="Avatar" class="avatar">
+                        <span id="usernameDisplay">usuário</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="plans-container">
+                <div class="current-plan">
+                    <div class="current-plan-badge">Seu Plano Atual</div>
+                    <h2>🆓 Plano Gratuito</h2>
+                    <p>Ideal para começar e testar a plataforma</p>
+                </div>
+
+                <div class="plans-comparison">
+                    <!-- Plano Gratuito -->
+                    <div class="pricing-card">
+                        <h3>🆓 Gratuito</h3>
+                        <div class="price">R$ 0/mês</div>
+                        <div class="plan-features">
+                            <ul>
+                                <li>1 Bot Simultâneo</li>
+                                <li>512MB RAM</li>
+                                <li>Uptime 24/7</li>
+                                <li>Suporte Básico</li>
+                                <li>Logs Básicos</li>
+                            </ul>
+                        </div>
+                        <a href="#" class="btn-outline" onclick="alert('✅ Você já está no plano Gratuito!')">Plano Atual</a>
+                    </div>
+
+                    <!-- Plano Premium -->
+                    <div class="pricing-card popular">
+                        <div class="popular-badge">Recomendado</div>
+                        <h3>🚀 Premium</h3>
+                        <div class="price">R$ 15/mês</div>
+                        <div class="plan-features">
+                            <ul>
+                                <li>3 Bots Simultâneos</li>
+                                <li>2GB RAM Total</li>
+                                <li>Uptime 24/7</li>
+                                <li>Suporte Prioritário</li>
+                                <li>Backups Diários</li>
+                                <li>Monitoramento Avançado</li>
+                            </ul>
+                        </div>
+                        <a href="#" class="btn-primary" onclick="showPlanMessage('Premium')">Fazer Upgrade</a>
+                    </div>
+
+                    <!-- Plano Empresarial -->
+                    <div class="pricing-card">
+                        <h3>🏢 Empresarial</h3>
+                        <div class="price">R$ 40/mês</div>
+                        <div class="plan-features">
+                            <ul>
+                                <li>Bots Ilimitados</li>
+                                <li>8GB RAM Total</li>
+                                <li>Uptime 24/7 Garantido</li>
+                                <li>Suporte 24/7</li>
+                                <li>Backups em Tempo Real</li>
+                                <li>SSL Grátis</li>
+                                <li>Domínio Personalizado</li>
+                            </ul>
+                        </div>
+                        <a href="#" class="btn-outline" onclick="showPlanMessage('Empresarial')">Fazer Upgrade</a>
+                    </div>
+                </div>
+
+                <div class="plan-unavailable" style="text-align: center; margin-top: 3rem; padding: 2rem; background: #1a1a1a; border-radius: 10px;">
+                    <h3>🚧 Sistema de Pagamentos em Desenvolvimento</h3>
+                    <p>No momento, estamos trabalhando na integração com gateways de pagamento.</p>
+                    <p>Enquanto isso, aproveite nosso plano gratuito! 🎉</p>
+                    <p><strong>Entre no nosso <a href="https://discord.gg/PA3vD3b9yT" style="color: #667eea;">Discord</a> para novidades!</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPlanMessage(planName) {
+            alert(`🚧 ${planName} - Indisponível no Momento\n\n💡 Estamos trabalhando na integração com sistemas de pagamento.\n\n📢 Entre no nosso Discord para ser avisado quando estiver disponível!\n\n🔗 https://discord.gg/PA3vD3b9yT`);
+        }
+    </script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
