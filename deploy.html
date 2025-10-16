@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deploy Bot - CloudiX</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        .deploy-container {
+            padding: 2rem 0;
+        }
+        
+        .deploy-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .deploy-steps:before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #333;
+            z-index: 1;
+        }
+        
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            color: #666;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: bold;
+        }
+        
+        .step.active .step-number {
+            background: #667eea;
+            color: white;
+        }
+        
+        .step.completed .step-number {
+            background: #28a745;
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .step.active .step-label {
+            color: #667eea;
+        }
+        
+        .step.completed .step-label {
+            color: #28a745;
+        }
+        
+        .deploy-content {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+        
+        .step-content {
+            display: none;
+        }
+        
+        .step-content.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: #2d2d2d;
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .file-upload {
+            border: 2px dashed #333;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .file-upload:hover {
+            border-color: #667eea;
+        }
+        
+        .file-upload.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+        
+        .file-info {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #2d2d2d;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .deploy-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+        }
+        
+        .btn-secondary {
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        
+        .deploy-log {
+            background: #0f0f0f;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 1rem;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .log-entry {
+            margin-bottom: 0.25rem;
+        }
+        
+        .log-success { color: #28a745; }
+        .log-error { color: #dc3545; }
+        .log-warning { color: #ffc107; }
+        .log-info { color: #17a2b8; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>☁️ CloudiX</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span>📊 Dashboard</span>
+                </a>
+                <a href="deploy.html" class="nav-item active">
+                    <span>🚀 Deploy Bot</span>
+                </a>
+                <a href="profile.html" class="nav-item">
+                    <span>👤 Meu Perfil</span>
+                </a>
+                <a href="plans.html" class="nav-item">
+                    <span>💎 Planos</span>
+                </a>
+                <a href="https://discord.gg/PA3vD3b9yT" class="nav-item" target="_blank">
+                    <span>💬 Suporte</span>
+                </a>
+                <a href="#" class="nav-item logout" onclick="logout()">
+                    <span>🚪 Sair</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1>🚀 Deploy de Bot</h1>
+                    <p>Implante seu bot Discord na CloudiX</p>
+                </div>
+                <div class="header-right">
+                    <div class="user-menu">
+                        <img src="assets/default-avatar.png" alt="Avatar" class="avatar">
+                        <span id="usernameDisplay">usuário</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="deploy-container">
+                <!-- Steps Indicator -->
+                <div class="deploy-steps">
+                    <div class="step active" id="step1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Configuração</div>
+                    </div>
+                    <div class="step" id="step2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Upload</div>
+                    </div>
+                    <div class="step" id="step3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Implantação</div>
+                    </div>
+                </div>
+
+                <!-- Step Contents -->
+                <div class="deploy-content">
+                    <!-- Step 1: Configuration -->
+                    <div class="step-content active" id="stepContent1">
+                        <h2>⚙️ Configuração do Bot</h2>
+                        <p>Configure as informações básicas do seu bot</p>
+                        
+                        <form id="botConfigForm">
+                            <div class="form-group">
+                                <label for="botName">Nome do Bot</label>
+                                <input type="text" id="botName" placeholder="MeuBotIncível" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="botToken">Token do Bot Discord</label>
+                                <input type="password" id="botToken" placeholder="SEU_TOKEN_AQUI" required>
+                                <small style="color: #666; margin-top: 5px; display: block;">
+                                    🔒 Não compartilhe seu token! Como obter: 
+                                    <a href="https://discord.com/developers/applications" target="_blank" style="color: #667eea;">
+                                        Discord Developer Portal
+                                    </a>
+                                </small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="botDescription">Descrição (Opcional)</label>
+                                <textarea id="botDescription" placeholder="Descreva o que seu bot faz..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="botVersion">Versão do Node.js</label>
+                                <select id="botVersion">
+                                    <option value="18">Node.js 18 (Recomendado)</option>
+                                    <option value="16">Node.js 16</option>
+                                    <option value="20">Node.js 20</option>
+                                </select>
+                            </div>
+                        </form>
+                        
+                        <div class="deploy-actions">
+                            <div></div> <!-- Spacer -->
+                            <button class="btn-primary" onclick="nextStep(1)">
+                                Próximo → Upload
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: File Upload -->
+                    <div class="step-content" id="stepContent2">
+                        <h2>📁 Upload dos Arquivos</h2>
+                        <p>Faça upload do código do seu bot</p>
+                        
+                        <div class="file-upload" id="fileUploadArea">
+                            <div class="upload-icon">📁</div>
+                            <h3>Arraste seus arquivos aqui</h3>
+                            <p>ou clique para selecionar</p>
+                            <input type="file" id="fileInput" style="display: none;" multiple>
+                            <small style="color: #666;">
+                                Formatos suportados: .zip, .js, .json, arquivos de código
+                            </small>
+                        </div>
+                        
+                        <div class="file-info" id="fileInfo">
+                            <h4>📄 Arquivos Selecionados:</h4>
+                            <ul id="fileList"></ul>
+                        </div>
+                        
+                        <div class="form-group" style="margin-top: 2rem;">
+                            <label>Ou cole seu código principal:</label>
+                            <textarea id="codeEditor" placeholder="// Cole o código do seu bot aqui\nconst { Client } = require('discord.js');\nconst client = new Client();\n\nclient.on('ready', () => {\n    console.log('Bot online!');\n});\n\nclient.login('SEU_TOKEN');"></textarea>
+                        </div>
+                        
+                        <div class="deploy-actions">
+                            <button class="btn-secondary" onclick="prevStep(2)">
+                                ← Voltar
+                            </button>
+                            <button class="btn-primary" id="deployBtn" onclick="nextStep(2)" disabled>
+                                Próximo → Implantar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Deployment -->
+                    <div class="step-content" id="stepContent3">
+                        <h2>🚀 Implantação</h2>
+                        <p>Implantando seu bot na CloudiX...</p>
+                        
+                        <div class="deploy-log" id="deployLog">
+                            <div class="log-entry log-info">🚀 Iniciando deploy do bot...</div>
+                            <div class="log-entry log-info">📦 Verificando arquivos...</div>
+                            <div class="log-entry log-info">🔧 Configurando ambiente...</div>
+                            <div class="log-entry log-info">📥 Instalando dependências...</div>
+                            <div class="log-entry log-info">🔗 Conectando ao Discord...</div>
+                        </div>
+                        
+                        <div class="deploy-actions">
+                            <button class="btn-secondary" onclick="prevStep(3)">
+                                ← Voltar
+                            </button>
+                            <button class="btn-primary" id="finalDeployBtn" onclick="deployBot()">
+                                🚀 Iniciar Implantação
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/deploy.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
